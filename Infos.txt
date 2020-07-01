@@ -1,0 +1,3 @@
+- results saved in folders named after the training set, not the pre trained set
+- each sets folder split into folders, one for each architecture
+- filename: <Modeltype>_>training dataset>_Transfer_<pretrained dataset>_<number epochs>_<number frozen layers>_best_model.hdf5
