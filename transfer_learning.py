@@ -7,22 +7,23 @@ import pandas as pd
 import os
 import sys
 from tensorflow import keras
+import tensorflow as tf
 
-# Input data directory, for UCR archive 128  
-input_directory = '/home/pia/Dokumente/Studium/AI/UCRArchive_2018'
+# Input data directory, for UCR archive 128
+input_directory = '/home/alamayreh/UCRArchive_2018'
 
-# Results directory 
-output_directory = '/home/pia/Dokumente/Studium/AI//Transfer Learning Server/results_transfer'
+# Results directory
+output_directory = '/home/alamayreh/pia_resutls/results_transfer'
 
 # Input data directory, for pretrained models
-pre_trained_directory = '/home/pia/Dokumente/Studium/AI/tl-results'
+pre_trained_directory = '/home/alamayreh/results_training_backup'
 
-# List of the datasets 
-dataset_names = pd.read_csv('DataSummary.csv')  
+# List of the datasets
+dataset_names = pd.read_csv('DataSummary.csv')
 UCR128 = dataset_names['Name']
 
 res = pd.DataFrame()
-dataset_names = ['Adiac','Car','Coffee']
+dataset_names = ['Adiac', 'Car', 'Coffee']
 models = ['CNN', 'RESNET', 'ENCODER', 'INCEPTION']
 epochs = [20, 100, 500, 1000]
 frozen_layers_Cnn = [0, 4, 7, 11]
@@ -36,61 +37,65 @@ frozen_layers_Inception = [0, 10, 19, 32, 41, 50, 63]
 #frozen_layers_Encoder = [21, 22]
 #frozen_layers_Inception = [62, 63]
 
-gpu = 4
+gpu = 1
 
 file_path = output_directory + '/results.csv'
 
-with open( file_path, 'w' ) as fd:
-    fd.write( 'model;pre_trained_set;training_set;num_frozen_layers;epochs;accuracy\n' )
+with open(file_path, 'w') as fd:
+    fd.write('model;pre_trained_set;training_set;num_frozen_layers;epochs;accuracy\n')
     fd.close()
 
-for dataset_name in UCR128:
-#for dataset_name in dataset_names:
 
-    # Ouput directory for each dataset
-    output_dataset = output_directory+'/'+dataset_name+'/'
+with tf.device('/device:GPU:1'):
+    for dataset_name in UCR128:
+        # for dataset_name in dataset_names:
 
-    for m in models:
-        path = output_dataset + '/' + m
+        # Ouput directory for each dataset
+        output_dataset = output_directory+'/'+dataset_name+'/'
 
-        if not os.path.exists(path):
-            os.makedirs(path)
-            print("Directory ", path,  " Created ")
-        else:
-            print("Directory ", path,  " already exists")
+        for m in models:
+            path = output_dataset + '/' + m
 
-    data_instance = Data(input_directory, dataset_name, reshape=True)
+            if not os.path.exists(path):
+                os.makedirs(path)
+                print("Directory ", path,  " Created ")
+            else:
+                print("Directory ", path,  " already exists")
 
-    for transfer_set in UCR128:
-    #for transfer_set in dataset_names:
+        data_instance = Data(input_directory, dataset_name, reshape=True)
 
-        if transfer_set != dataset_name:
+        for transfer_set in UCR128:
+            # for transfer_set in dataset_names:
 
-            for eps in epochs:
+            if transfer_set != dataset_name:
 
-                for num_layers in frozen_layers_Cnn:
+                for eps in epochs:
 
-                    cnn = Cnn( data_instance, output_dataset + '/CNN' )
-                    cnn.build_model()
-                    cnn.retrain( pre_trained_directory, eps, 16 * gpu, transfer_set, file_path, num_layers )
+                    for num_layers in frozen_layers_Cnn:
 
+                        cnn = Cnn(data_instance, output_dataset + '/CNN')
+                        cnn.build_model()
+                        cnn.retrain(pre_trained_directory, eps, 16 *
+                                    gpu, transfer_set, file_path, num_layers)
 
-                for num_layers in frozen_layers_Resnet:
+                    for num_layers in frozen_layers_Resnet:
 
-                    res = Resnet( data_instance, output_dataset + '/RESNET' )
-                    res.build_model()
-                    res.retrain( pre_trained_directory, eps, 16 * gpu, transfer_set, file_path, num_layers=num_layers )
+                        res = Resnet(data_instance, output_dataset + '/RESNET')
+                        res.build_model()
+                        res.retrain(pre_trained_directory, eps, 16 * gpu,
+                                    transfer_set, file_path, num_layers=num_layers)
 
+                    for num_layers in frozen_layers_Encoder:
 
-                for num_layers in frozen_layers_Encoder:
+                        enc = Encoder(data_instance, output_dataset + '/ENCODER')
+                        enc.build_model()
+                        enc.retrain(pre_trained_directory, eps, 12,
+                                    transfer_set, file_path, num_layers=num_layers)
 
-                    enc = Encoder( data_instance, output_dataset + '/ENCODER' )
-                    enc.build_model()
-                    enc.retrain( pre_trained_directory, eps, 12, transfer_set, file_path, num_layers=num_layers )
+                    for num_layers in frozen_layers_Inception:
 
-
-                for num_layers in frozen_layers_Inception:
-
-                    inc = Inception( data_instance, output_dataset + '/INCEPTION' )
-                    inc.build_model()
-                    inc.retrain( pre_trained_directory, eps, 64 * gpu, transfer_set, file_path, num_layers=num_layers )
+                        inc = Inception(
+                            data_instance, output_dataset + '/INCEPTION')
+                        inc.build_model()
+                        inc.retrain(pre_trained_directory, eps, 64 * gpu,
+                                    transfer_set, file_path, num_layers=num_layers)
