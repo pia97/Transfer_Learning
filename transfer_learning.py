@@ -9,6 +9,15 @@ import sys
 from tensorflow import keras
 import tensorflow as tf
 
+# initialization should not allocate all memory on the device
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        except RuntimeError as e:
+            print(e)
+
 # Input data directory, for UCR archive 128
 input_directory = '/home/alamayreh/UCRArchive_2018'
 
@@ -23,7 +32,8 @@ dataset_names = pd.read_csv('DataSummary.csv')
 UCR128 = dataset_names['Name']
 
 res = pd.DataFrame()
-dataset_names = ['Adiac', 'Car', 'Coffee']
+dataset_names = ['Adiac']
+transfer_names = ['DiatomSizeReduction', 'SwedishLeaf', 'ShapesAll']
 models = ['CNN', 'RESNET', 'ENCODER', 'INCEPTION']
 epochs = [20, 100, 500, 1000]
 frozen_layers_Cnn = [0, 4, 7, 11]
@@ -47,7 +57,7 @@ with open(file_path, 'w') as fd:
 
 
 with tf.device('/device:GPU:1'):
-    for dataset_name in UCR128:
+    for dataset_name in dataset_names:
         # for dataset_name in dataset_names:
 
         # Ouput directory for each dataset
@@ -64,7 +74,7 @@ with tf.device('/device:GPU:1'):
 
         data_instance = Data(input_directory, dataset_name, reshape=True)
 
-        for transfer_set in UCR128:
+        for transfer_set in transfer_names:
             # for transfer_set in dataset_names:
 
             if transfer_set != dataset_name:
