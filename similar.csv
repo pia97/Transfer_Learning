@@ -24,9 +24,9 @@ ECGFiveDays,ECG5000,TwoLeadECG,CricketY
 Earthquakes,RefrigerationDevices,ShapeletSim,ElectricDevices
 ElectricDevices,MedicalImages,WordSynonyms,ItalyPowerDemand
 Fish,ShapesAll,Adiac,DiatomSizeReduction
-FaceAll,SyntheticControl,FacesUCR,SonyAIBORobotSurfaceII
+FaceAll,SyntheticControl,FacesUCR,SonyAIBORobotSurface2
 FaceFour,ShapesAll,BeetleFly,OSULeaf
-FacesUCR,SyntheticControl,FaceAll,SonyAIBORobotSurface
+FacesUCR,SyntheticControl,FaceAll,SonyAIBORobotSurface1
 FordA,FordB,Phoneme,Worms
 FordB,FordA,Phoneme,Worms
 GunPoint,UWaveGestureLibraryY,MoteStrain,FiftyWords
@@ -37,9 +37,9 @@ Herring,Fish,Adiac,SwedishLeaf
 InlineSkate,ShapesAll,UWaveGestureLibraryX,ToeSegmentation2
 InsectWingbeatSound,StarLightCurves,FiftyWords,MedicalImages
 ItalyPowerDemand,Trace,SyntheticControl,UWaveGestureLibraryX
-LargeKitchenAppliances,Lighting7,ElectricDevices,InsectWingbeatSound
-Lighting2,Lighting7,WordSynonyms,FiftyWords
-Lighting7,FiftyWords,WordSynonyms,MedicalImages
+LargeKitchenAppliances,Lightning7,ElectricDevices,InsectWingbeatSound
+Lightning2,Lightning7,WordSynonyms,FiftyWords
+Lightning7,FiftyWords,WordSynonyms,MedicalImages
 Mallat,WordSynonyms,FiftyWords,UWaveGestureLibraryAll
 Meat,Strawberry,FiftyWords,Beef
 MedicalImages,PhalangesOutlinesCorrect,DistalPhalanxOutlineAgeGroup,ProximalPhalanxTW
@@ -61,9 +61,9 @@ RefrigerationDevices,FordA,ElectricDevices,FordB
 ScreenType,ElectricDevices,CricketX,CricketZ
 ShapeletSim,RefrigerationDevices,Phoneme,Earthquakes
 ShapesAll,DiatomSizeReduction,Fish,Adiac
-SmallKitchenAppliances,Lighting7,LargeKitchenAppliances,ElectricDevices
-SonyAIBORobotSurface,SwedishLeaf,Adiac,ECG200
-SonyAIBORobotSurfaceII,SyntheticControl,SonyAIBORobotSurface,Two_Patterns
+SmallKitchenAppliances,Lightning7,LargeKitchenAppliances,ElectricDevices
+SonyAIBORobotSurface1,SwedishLeaf,Adiac,ECG200
+SonyAIBORobotSurface2,SyntheticControl,SonyAIBORobotSurface1,TwoPatterns
 StarLightCurves,UWaveGestureLibraryX,WordSynonyms,InsectWingbeatSound
 Strawberry,WordSynonyms,FiftyWords,Meat
 SwedishLeaf,Adiac,DiatomSizeReduction,Fish
@@ -72,7 +72,7 @@ ToeSegmentation1,ToeSegmentation2,WordSynonyms,CricketX
 ToeSegmentation2,ToeSegmentation1,UWaveGestureLibraryX,WordSynonyms
 Trace,UWaveGestureLibraryY,ItalyPowerDemand,UWaveGestureLibraryZ
 TwoLeadECG,ItalyPowerDemand,UWaveGestureLibraryX,UWaveGestureLibraryY
-Two_Patterns,SonyAIBORobotSurfaceII,SyntheticControl,SonyAIBORobotSurface
+TwoPatterns,SonyAIBORobotSurface2,SyntheticControl,SonyAIBORobotSurface1
 UWaveGestureLibraryAll,Worms,ShapesAll,UWaveGestureLibraryX
 Wine,Beef,UWaveGestureLibraryY,FiftyWords
 WordSynonyms,FiftyWords,Strawberry,StarLightCurves
