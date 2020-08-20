@@ -67,9 +67,9 @@ gpu = 1
 
 file_path = output_directory + '/results.csv'
 
-with open(file_path, 'w') as fd:
-    fd.write('model;pre_trained_set;training_set;num_frozen_layers;epochs;accuracy\n')
-    fd.close()
+#with open(file_path, 'w') as fd:
+#    fd.write('model;pre_trained_set;training_set;num_frozen_layers;epochs;accuracy\n')
+#    fd.close()
 
 #b = True
 with tf.device('/device:GPU:1'):
@@ -126,6 +126,7 @@ with tf.device('/device:GPU:1'):
                     inc.retrain(pre_trained_directory, eps, 64 * gpu,
                                 transfer_set, file_path, num_layers=num_layers)
 
+"""
     for dataset_name in UCR86:
 
         data_instance = Data(input_directory, dataset_name, reshape=True)
@@ -207,57 +208,4 @@ with tf.device('/device:GPU:1'):
                     inc.build_model()
                     inc.retrain(pre_trained_directory, eps, 64 * gpu,
                                 transfer_set, file_path, num_layers=num_layers)
-"""
-for dataset_name in UCR86:
-    # for dataset_name in dataset_names:
-
-    # Ouput directory for each dataset
-    output_dataset = output_directory+'/'+dataset_name+'/'
-
-    for m in models:
-        path = output_dataset + '/' + m
-
-        if not os.path.exists(path):
-            os.makedirs(path)
-            print("Directory ", path,  " Created ")
-        else:
-            print("Directory ", path,  " already exists")
-
-    data_instance = Data(input_directory, dataset_name, reshape=True)
-
-    transfer_names = transfered[ dataset_name ]
-    transfer_set = transfer_names[0]
-    if transfer_set != dataset_name:
-
-        for eps in epochs:
-
-            for num_layers in frozen_layers_Cnn:
-
-                cnn = Cnn(data_instance, output_dataset + '/CNN')
-                cnn.build_model()
-                cnn.retrain(pre_trained_directory, eps, 16 *
-                            gpu, transfer_set, file_path, num_layers)
-
-            for num_layers in frozen_layers_Resnet:
-
-                res = Resnet(data_instance, output_dataset + '/RESNET')
-                res.build_model()
-                res.retrain(pre_trained_directory, eps, 16 * gpu,
-                            transfer_set, file_path, num_layers=num_layers)
-
-            for num_layers in frozen_layers_Encoder:
-
-                enc = Encoder(data_instance, output_dataset + '/ENCODER')
-                enc.build_model()
-                enc.retrain(pre_trained_directory, eps, 12,
-                                transfer_set, file_path, num_layers=num_layers)
-
-            for num_layers in frozen_layers_Inception:
-
-                inc = Inception(
-                    data_instance, output_dataset + '/INCEPTION')
-                inc.build_model()
-                inc.retrain(pre_trained_directory, eps, 64 * gpu,
-                            transfer_set, file_path, num_layers=num_layers)
-
 """
